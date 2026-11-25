@@ -6,11 +6,7 @@ The 2010 game officially supported the Xbox 360 Controller for Windows and a sho
 
 ## Start normally
 
-Keep Steam running, then start the game with:
-
-```text
-<GamePath>\SoapboxLauncher\SBRW.Launcher.exe
-```
+Keep Steam running, then start the game with `SBRW.Launcher.exe` from your Soapbox installation.
 
 A Steam shortcut or Steam overlay is not required. If the controller does not respond after an update, restart Steam once so it reloads the installed layout, then start the game again.
 

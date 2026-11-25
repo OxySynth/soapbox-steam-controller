@@ -50,6 +50,7 @@ const DigitalAction digitalActions[] = {
 };
 
 constexpr int digitalCount = sizeof(digitalActions) / sizeof(digitalActions[0]);
+constexpr const char* kActionManifestFile = "game_actions_413080.vdf";
 
 void Log(const char* format, ...) {
   char path[MAX_PATH] = {};
@@ -82,7 +83,7 @@ bool InstallActionManifest(const char* source) {
   snprintf(directory, sizeof(directory), "%s\\controller_config", steamPath);
   CreateDirectoryA(directory, nullptr);
   char destination[MAX_PATH] = {};
-  snprintf(destination, sizeof(destination), "%s\\game_actions_413080.vdf", directory);
+  snprintf(destination, sizeof(destination), "%s\\%s", directory, kActionManifestFile);
   if (CopyFileA(source, destination, FALSE) != 0) return true;
   return PathFileExistsA(destination) != 0;
 }
@@ -660,7 +661,7 @@ DWORD WINAPI BridgeThread(void*) {
   char manifest[MAX_PATH] = {};
   GetModuleFileNameA(g_module, manifest, MAX_PATH);
   char* slash = std::strrchr(manifest, '\\');
-  if (slash) std::strcpy(slash + 1, "game_actions_413080.vdf");
+  if (slash) std::strcpy(slash + 1, kActionManifestFile);
 
   if (!InstallActionManifest(manifest)) Log("Could not install Steam Input action manifest");
   SteamInputApi api;

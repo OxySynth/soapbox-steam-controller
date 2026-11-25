@@ -18,7 +18,7 @@ Physical keyboard controls remain active and take priority while held.
 
 ## Build
 
-Run `build.bat`, or compile from an x86 Developer Command Prompt:
+Run `build.bat`. It uses `vswhere` to locate an installed Visual Studio/Build Tools C++ toolchain automatically. Alternatively, compile from any x86 Developer Command Prompt:
 
 ```bat
 cl /nologo /LD /EHsc /O2 bridge.cpp steam_input_api.cpp ^
@@ -26,15 +26,11 @@ cl /nologo /LD /EHsc /O2 bridge.cpp steam_input_api.cpp ^
   advapi32.lib user32.lib shlwapi.lib setupapi.lib hid.lib
 ```
 
-If Visual Studio is installed elsewhere, update the `vcvars32.bat` path in `build.bat`.
-
 ## Install
 
-Copy `SteamControllerInput.asi` into the game's `scripts` folder. Start the game through:
+For end-user release installation, follow [RELEASE.md](RELEASE.md).
 
-```text
-E:\Oxy\Games\SoapboxLauncher\SBRW.Launcher.exe
-```
+Copy `SteamControllerInput.asi` and `game_actions_413080.vdf` into the game's `scripts` folder, then start the game with `SBRW.Launcher.exe` from your Soapbox installation.
 
 Launching `nfsw.exe` directly does not provide the required server address/login token.
 

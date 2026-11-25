@@ -1,13 +1,24 @@
 #include "steam_input_api.h"
 #include <shlwapi.h>
+#include <cstring>
 #include <string>
 
 #pragma comment(lib, "shlwapi.lib")
 
+static constexpr const char* kSteamAppId = "413080";
+
 static HMODULE FindSteamApi() {
-  HMODULE local = LoadLibraryA("scripts\\steam_api.dll");
-  if (!local) local = LoadLibraryA("steam_api.dll");
-  if (local) return local;
+  char executablePath[MAX_PATH] = {};
+  if (GetModuleFileNameA(nullptr, executablePath, MAX_PATH)) {
+    char* slash = std::strrchr(executablePath, '\\');
+    if (slash) {
+      *slash = '\0';
+      std::string base(executablePath);
+      HMODULE local = LoadLibraryA((base + "\\scripts\\steam_api.dll").c_str());
+      if (!local) local = LoadLibraryA((base + "\\steam_api.dll").c_str());
+      if (local) return local;
+    }
+  }
   char steamPath[MAX_PATH] = {};
   DWORD size = MAX_PATH;
   if (RegGetValueA(HKEY_CURRENT_USER, "Software\\Valve\\Steam", "SteamPath", RRF_RT_REG_SZ, nullptr, steamPath, &size) == ERROR_SUCCESS) {
@@ -31,8 +42,8 @@ static T Resolve(HMODULE module, const char* name) {
 
 bool SteamInputApi::Load() {
   if (module) return true;
-  SetEnvironmentVariableA("SteamAppId", "413080");
-  SetEnvironmentVariableA("SteamGameId", "413080");
+  SetEnvironmentVariableA("SteamAppId", kSteamAppId);
+  SetEnvironmentVariableA("SteamGameId", kSteamAppId);
   module = FindSteamApi();
   if (!module) return false;
 
